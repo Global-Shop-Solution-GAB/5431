@@ -1,0 +1,87 @@
+Program.Sub.Preflight.Start
+Program.External.Include.Library("GCG_5431_IssueReceipts.lib")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Author: Bix
+'Date: Apr 15, 2019
+'GCG_5431_Release_Lot_Bin.g2u
+'Looks through closed WOs and releases WIP RMs Lot Bin Records
+V.Local.sError.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.CallSub(GetClosedWOsList)
+F.Intrinsic.Control.CallSub(OpenLotBinDT)
+F.Intrinsic.Control.CallSub(FilterLotBinAndProcesStandaloneIssue)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.GetClosedWOsList.Start
+V.Local.sError.Declare
+F.Intrinsic.Control.Try
+
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("dtWOs","con","select JOB + SUFFIX as WO, year(DATE_CLOSED) as YEAR_CLOSED, month(DATE_CLOSED) as MONTH_CLOSED, day(DATE_CLOSED) as DAY_CLOSED from V_JOB_HEADER;",True)
+F.ODBC.Connection!con.Close
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.GetClosedWOsList.End
+
+Program.Sub.OpenLotBinDT.Start
+V.Local.sError.Declare
+V.Local.iRevOpt.Declare
+F.Intrinsic.Control.Try
+
+F.Global.General.ReadOption("070008",0,0,V.Local.iRevOpt)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Intrinsic.Control.If(V.Local.iRevOpt,=,1)
+	F.Data.DataTable.CreateFromSQL("dtLotBin","con","select left(PART,17) as Part, right(PART,3) as Rev, LOCATION as Locn, QUANTITY as Qty, 'WIP TO FG' as Ref, Lot, Bin, Heat, SERIAL_NUMBER as Serial, 'I' as 'Iss-Rec', left(SERIAL_NUMBER,9) as WO from V_ITEM_MASTER where Rev = 'WIP' and QUANTITY > 0;",True)
+F.Intrinsic.Control.Else
+	F.Data.DataTable.CreateFromSQL("dtLotBin","con","select PART as Part, LOCATION as Locn, QUANTITY as Qty, 'WIP TO FG' as Ref, Lot, Bin, Heat, SERIAL_NUMBER as Serial, 'I' as 'Iss-Rec', left(SERIAL_NUMBER,9) as WO from V_ITEM_MASTER where right(PART,3) = 'WIP' and QUANTITY > 0;",True)
+F.Intrinsic.Control.EndIf
+F.ODBC.Connection!con.Close
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.OpenLotBinDT.End
+
+Program.Sub.FilterLotBinAndProcesStandaloneIssue.Start
+V.Local.sError.Declare
+V.Local.iRevOpt.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.DataTable.dtLotBin.RowCount,=,0,"or",V.DataTable.dtWOs.RowCount,=,0)
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+F.Global.General.ReadOption("070008",0,0,V.Local.iRevOpt)
+F.Intrinsic.Control.If(V.Local.iRevOpt,=,1)
+	F.Data.Linq.Join("LeftJoin","DataTable","dtLotBin*!*ITEM","DataTable","dtWOs*!*JOBS","ITEM.WO = JOBS.WO","ITEM.Part*!*ITEM.Rev*!*ITEM.Locn*!*ITEM.Qty*!*ITEM.Ref*!*ITEM.Lot*!*ITEM.Bin*!*ITEM.Heat*!*ITEM.Serial*!*ITEM.Iss-Rec","JOBS.YEAR_CLOSED <> 1900 and JOBS.MONTH_CLOSED <> 1 and JOBS.DAY_CLOSED <> 1",,,"dtLotBinFiltered",True)
+F.Intrinsic.Control.Else
+	F.Data.Linq.Join("LeftJoin","DataTable","dtLotBin*!*ITEM","DataTable","dtWOs*!*JOBS","ITEM.WO = JOBS.WO","ITEM.Part*!*ITEM.Locn*!*ITEM.Qty*!*ITEM.Ref*!*ITEM.Lot*!*ITEM.Bin*!*ITEM.Heat*!*ITEM.Serial*!*ITEM.Iss-Rec","JOBS.YEAR_CLOSED <> 1900 and JOBS.MONTH_CLOSED <> 1 and JOBS.DAY_CLOSED <> 1",,,"dtLotBinFiltered",True)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Merge("dtLotBinFiltered","IssueReceipts","True",2)
+F.Data.DataTable.Close("dtWOs")
+F.Data.DataTable.Close("dtLotBin")
+F.Data.DataTable.Close("dtLotBinFiltered")
+F.Intrinsic.Control.CallSub(IssueReceipt)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.FilterLotBinAndProcesStandaloneIssue.End
