@@ -1,0 +1,63 @@
+Program.Sub.Preflight.Start
+Program.External.Include.Library("GCG_5431_IssueReceipts.lib")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Author: Bix
+'Date: Mar 14th, 2019
+'Customer: Round Ground Metals, Inc.
+'GCG_5431_WIP_to_FG.g2u
+'After a WO is processed via WIP to FG and is selected to be closed, release all the WIP RM that has been stored in Lot/Bin for this job
+V.Local.sError.Declare
+V.Local.sJob.Declare
+V.Local.sSuffix.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.Caller.Hook,=,16504)
+	'Post Save process for WIP to FG screen
+	'Passed elements
+	'000003 - Job
+	'000004 - Suffix
+	'000012 - Close Y/N Flag
+	F.Intrinsic.Control.If(V.Passed.000012,=,"Y")
+		F.Intrinsic.String.LPad(V.Passed.000003," ",6,V.Local.sJob)
+		F.Intrinsic.String.LPad(V.Passed.000004," ",3,V.Local.sSuffix)
+		F.Intrinsic.Control.CallSub(ReleaseWIPRM,"Job",V.Local.sJob,"Suffix",V.Local.sSuffix)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.ReleaseWIPRM.Start
+'Args: Job, Suffix
+'Query for lot/bin records that have a serial number that begins with the Job/Suffix as the first 9 characters
+V.Local.sError.Declare
+V.Local.sSQL.Declare
+V.Local.iRevOpt.Declare
+F.Intrinsic.Control.Try
+
+F.Global.General.ReadOption("070008",0,0,V.Local.iRevOpt)
+F.Intrinsic.Control.If(V.Local.iRevOpt,=,1)
+	F.Intrinsic.String.Build("select left(PART,17) as Part, right(PART,3) as Rev, LOCATION as Locn, QUANTITY as Qty, 'WIP TO FG' as Ref, Lot, Bin, SERIAL_NUMBER as Serial, 'I' as 'Iss-Rec' from V_ITEM_MASTER where left(SERIAL_NUMBER,9) = '{0}{1}';",V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("select PART as Part, LOCATION as Locn, QUANTITY as Qty, 'WIP TO FG' as Ref, Lot, Bin, SERIAL_NUMBER as Serial, 'I' as 'Iss-Rec' from V_ITEM_MASTER where left(SERIAL_NUMBER,9) = '{0}{1}';",V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("dtWOWIP","con",V.Local.sSQL,True)
+F.ODBC.Connection!con.Close
+'Merge Lot/Bin DT with IssueReceipts DT
+F.Data.DataTable.Merge("dtWOWIP","IssueReceipts",True,2)
+F.Data.DataTable.Close("dtWOWIP")
+F.Intrinsic.Control.CallSub(IssueReceipt)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.ReleaseWIPRM.End
