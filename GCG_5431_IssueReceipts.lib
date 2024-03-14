@@ -1,0 +1,74 @@
+'This library is intended to be used for running Standalone Issue and Receipts screenless. Fields marked with an asterick(*) are required.
+'Fields:						Format and Size
+'Part (*)						20 chars max (17 with Rev)
+'Rev (^)						3 chars max
+'Locn						2 chars max
+'Qty (*)						numeric 15.6 (+-)
+'Ref (*)						15 chars max
+'Lot (#)						15 chars max
+'Bin (#)						6 chars max
+'Heat (#)						15 chars max
+'Serial (#)					30 chars max
+'Iss-Rec (*)					1 char max
+'GL-Acct						15 chars max
+'Cost						numeric 16.6 (+)
+'Allow-Zero-Cost-Flag(*)		1 char max
+'Width						numeric 6.2 (+)
+'Length						numeric 6.2 (+)
+'UM-Width					2 char max
+'UM-Length					2 char max
+'	
+'NOTE:
+'(^) - Field is not to be filled in if the Revision system is not turned on in company options
+'(#) - If a lot-bin record has not been created for the Part(Rev), this program will create the record in the item master on receipts as long as the bin exists in the bin master
+'call the IssueReceipt subroutine to have the program format and run the program
+Program.Sub.Preflight.Start
+F.Data.DataTable.Create("IssueReceipts",True)
+F.Data.DataTable.AddColumn("IssueReceipts","Part","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Rev","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Locn","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Qty","String","0")
+F.Data.DataTable.AddColumn("IssueReceipts","Ref","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Lot","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Bin","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Heat","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Serial","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Iss-Rec","String","I")
+F.Data.DataTable.AddColumn("IssueReceipts","GL-Acct","String","")
+F.Data.DataTable.AddColumn("IssueReceipts","Cost","String","0")
+F.Data.DataTable.AddColumn("IssueReceipts","Allow-Zero-Cost-Flag","String","Y")
+F.Data.DataTable.AddColumn("IssueReceipts","Width","String","0")
+F.Data.DataTable.AddColumn("IssueReceipts","Length","String","0")
+F.Data.DataTable.AddColumn("IssueReceipts","UM-Width","String","0")
+F.Data.DataTable.AddColumn("IssueReceipts","UM-Length","String","0")
+Program.Sub.Preflight.End
+
+Program.Sub.IssueReceipt.Start
+V.Local.sError.Declare
+V.Local.sPath.Declare
+V.Local.sFile.Declare
+V.Local.sFileString.Declare
+F.Intrinsic.Control.Try
+
+V.Local.sFile.Set("ISSUEREC.txt")
+F.Intrinsic.String.Build("{1}{0}",V.Local.sFile,V.Caller.CompanyCode,V.Local.sFile)
+F.Intrinsic.String.Build("{0}\{1}",V.Caller.FilesDir,V.Local.sFile,V.Local.sPath)
+
+F.Data.DataView.Create("IssueReceipts","TOFILE",22)
+F.Data.DataView.ToString("IssueReceipts","TOFILE",",",V.Ambient.NewLine,V.Local.sFileString)
+F.Data.DataView.Close("IssueReceipts","TOFILE")
+
+F.Intrinsic.File.String2File(V.Local.sPath,V.Local.sFileString)
+
+F.Global.Callwrapper.New("IssueReceipt","Inventory.StandAloneIssueReceipts")
+F.Global.Callwrapper.SetProperty("IssueReceipt","FileName",V.Local.sFile)
+F.Global.Callwrapper.Run("IssueReceipt")
+
+F.Intrinsic.File.DeleteFile(V.Local.sPath)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.IssueReceipt.End
