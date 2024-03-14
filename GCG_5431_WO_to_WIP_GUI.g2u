@@ -1,0 +1,566 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_Bin_Selector..Create
+Gui.F_Bin_Selector..Size(10380,1980)
+Gui.F_Bin_Selector..MinX(0)
+Gui.F_Bin_Selector..MinY(0)
+Gui.F_Bin_Selector..Position(0,0)
+Gui.F_Bin_Selector..BackColor(-2147483633)
+Gui.F_Bin_Selector..MousePointer(0)
+Gui.F_Bin_Selector..Event(UnLoad,F_Bin_Selector_UnLoad)
+Gui.F_Bin_Selector..Caption("WO to WIP - Select Location, Bin and Quantity")
+Gui.F_Bin_Selector..MaxButton(False)
+Gui.F_Bin_Selector..Sizeable(False)
+Gui.F_Bin_Selector.lblPart.Create(Label,"Part",True,1425,255,0,105,255,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.lblLoc.Create(Label,"Location",True,795,255,0,2985,255,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.lblBin.Create(Label,"Bin",True,1080,255,0,3960,255,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.txtQty.Create(TextBox,"0.0000",True,1875,300,0,8355,465,True,1,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtQty.NumericOnly(1)
+Gui.F_Bin_Selector.txtQty.Event(LostFocus,txtQty_LostFocus)
+Gui.F_Bin_Selector.lblQty.Create(Label,"Quantity",True,1875,255,0,8340,255,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.lblQtyWIP.Create(Label,"Qty already WIP'd:",True,1860,255,0,105,960,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.txtQtyWIP.Create(TextBox,"0.0000",True,1875,300,0,120,1170,False,1,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtQtyWIP.NumericOnly(1)
+Gui.F_Bin_Selector.txtQtyWIP.Mask("#,###,##0.0000")
+Gui.F_Bin_Selector.txtQtyOpen.Create(TextBox,"0.0000",True,1875,300,0,2325,1170,False,1,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtQtyOpen.NumericOnly(1)
+Gui.F_Bin_Selector.txtQtyOpen.Mask("#,###,##0.0000")
+Gui.F_Bin_Selector.lblQtyOpen.Create(Label,"Qty estimated:",True,1860,255,0,2310,960,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.cmdProcess.Create(Button)
+Gui.F_Bin_Selector.cmdProcess.Size(1380,420)
+Gui.F_Bin_Selector.cmdProcess.Position(8790,1110)
+Gui.F_Bin_Selector.cmdProcess.Caption("Process")
+Gui.F_Bin_Selector.cmdProcess.Event(Click,cmdProcess_Click)
+Gui.F_Bin_Selector.txtQtyPassed.Create(TextBox,"0.0000",False,1875,300,0,4500,1170,False,1,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtQtyPassed.NumericOnly(1)
+Gui.F_Bin_Selector.txtQtyPassed.Mask("#,###,##0.0000")
+Gui.F_Bin_Selector.lblQtyPassed.Create(Label,"Good pieces processed:",False,2010,255,0,4485,960,True,0,"Arial",8,-2147483633,0)
+Gui.F_Bin_Selector.txtPart.Create(TextBox,"",True,2715,300,0,120,465,True,0,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtPart.MaxLength(20)
+Gui.F_Bin_Selector.txtPart.Locked(True)
+Gui.F_Bin_Selector.txtLoc.Create(TextBox,"",True,795,300,0,3000,465,True,0,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtLoc.MaxLength(2)
+Gui.F_Bin_Selector.txtLoc.Locked(True)
+Gui.F_Bin_Selector.txtBin.Create(TextBox,"",True,1155,300,0,3975,465,True,0,"Arial",8,-2147483643,1)
+Gui.F_Bin_Selector.txtBin.MaxLength(6)
+Gui.F_Bin_Selector.cmdBinBRW.Create(Button)
+Gui.F_Bin_Selector.cmdBinBRW.Size(420,420)
+Gui.F_Bin_Selector.cmdBinBRW.Position(5280,390)
+Gui.F_Bin_Selector.cmdBinBRW.Caption("^")
+Gui.F_Bin_Selector.cmdBinBRW.Event(Click,cmdBinBRW_Click)
+Gui.F_Bin_Selector.ddlHeat.Create(DropDownList)
+Gui.F_Bin_Selector.ddlHeat.Size(2280,330)
+Gui.F_Bin_Selector.ddlHeat.Position(5880,450)
+Gui.F_Bin_Selector.lblHeat.Create(Label,"Heat",True,1080,255,0,5865,240,True,0,"Arial",8,-2147483633,0)
+Gui.F_Select_Printer..Create
+Gui.F_Select_Printer..Caption("CodeSoft Printers")
+Gui.F_Select_Printer..Size(3870,2475)
+Gui.F_Select_Printer..MinX(0)
+Gui.F_Select_Printer..MinY(0)
+Gui.F_Select_Printer..Position(0,0)
+Gui.F_Select_Printer..BackColor(-2147483633)
+Gui.F_Select_Printer..MousePointer(0)
+Gui.F_Select_Printer..Event(UnLoad,F_Select_Printer_UnLoad)
+Gui.F_Select_Printer..MaxButton(False)
+Gui.F_Select_Printer..Sizeable(False)
+Gui.F_Select_Printer.cboPrinter.Create(ComboBox)
+Gui.F_Select_Printer.cboPrinter.Size(2265,330)
+Gui.F_Select_Printer.cboPrinter.Position(195,420)
+Gui.F_Select_Printer.lblPrinter.Create(Label,"Printers",True,1935,255,0,180,210,True,0,"Arial",8,-2147483633,0)
+Gui.F_Select_Printer.lblCopies.Create(Label,"Copies",True,1935,255,0,180,840,True,0,"Arial",8,-2147483633,0)
+Gui.F_Select_Printer.txtCopies.Create(TextBox,"",True,750,300,0,195,1050,True,0,"Arial",8,-2147483643,1)
+Gui.F_Select_Printer.txtCopies.NumericOnly(2)
+Gui.F_Select_Printer.cmdPrint.Create(Button)
+Gui.F_Select_Printer.cmdPrint.Size(1080,405)
+Gui.F_Select_Printer.cmdPrint.Position(180,1470)
+Gui.F_Select_Printer.cmdPrint.Caption("Print")
+Gui.F_Select_Printer.cmdPrint.Event(Click,cmdPrint_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.External.Include.Library("GCG_5431_IssueReceipts.lib")
+V.Global.sSerial.Declare
+V.Global.sCustomer.Declare
+V.Global.sUseRev.Declare
+V.Global.fMaxWIP.Declare
+V.Global.fWIP.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Author: Bix
+'Date: Mar 12th, 2019
+'Round Ground Metals, Inc.
+'GCG_5431_WO_to_WIP_GUI.g2u
+'From the SFDC update job form, launch off the Script 3 button and prompt the user to select a Bin for the RM Part and Loc as well as a Qty. Selecting 'Ok' will make the program process and create a rev 'WIP' for the RM if it does not exist. It will then create a new Lot for the Part/Rev/Loc/Bin combo (EDIT: the A10 transaction handles the creation of the lot/bin record).  Lastly it will process an A10 transaction for the Part/Rev to the Lot and Bin with the Job + Suffix + Seq as the Serial Number
+V.Local.sError.Declare
+V.Local.sWO.Declare
+V.Local.sWC.Declare
+V.Local.sSeq.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.Caller.Hook,=,15840)
+	'Populate hook for the Update Job screen on the GUI - sets the Script 3 Button Label to 'WO to WIP'
+	F.Intrinsic.Variable.SetProperty("000019","T","000000")
+	F.Intrinsic.Variable.SetProperty("000048","T","000000")
+	F.Intrinsic.Variable.SetProperty("000049","T","000000")
+	F.Intrinsic.Variable.SetProperty("000103","T","000000")
+	F.Intrinsic.Variable.SetProperty("000102","T","000000")
+	F.Intrinsic.Variable.SetProperty("000050","T","000000")
+	
+	V.Passed.000019.set("NCR Codes")
+	V.Passed.000048.set("WIP Tags")
+	V.Passed.000049.set("NC-Reprint")
+	V.Passed.000103.set("Good LBS")
+	V.Passed.000102.set("Non-Conforming LBS")
+	V.Passed.000050.Set("WO to WIP")
+F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,15870)
+	'Script 3 button hook on the Update Job screen on the GUI
+	'Passed elements
+	'000004 - Job-Suffix
+	'000005 - Seq
+	F.Intrinsic.String.Split(V.Passed.000004,"-",V.Local.sWO)
+	F.Intrinsic.String.RPad(V.Local.sWO(0)," ",6,V.Local.sWO(0))
+	V.Local.sWO(0).Set(V.Local.sWO(0).Left6)
+	F.Intrinsic.String.RPad(V.Local.sWO(1)," ",3,V.Local.sWO(1))
+	V.Local.sWO(1).Set(V.Local.sWO(1).Left3)
+	F.Intrinsic.String.LPad(V.Passed.000005,"0",6,V.Local.sSeq)
+	Gui.F_Bin_Selector.txtQtyPassed.Text(0)
+	F.Intrinsic.Control.CallSub(DisplayBinSelector,"Job",V.Local.sWO(0),"Suffix",V.Local.sWO(1),"Seq",V.Local.sSeq)
+'F.Intrinsic.Control.ElseIf(V.Caller.Hook,=,15890)
+'	'Post process hook for the Update Job screen on the GUI
+'	'Passed elements
+'	'000001 - Good Pieces
+'	'000004 - Job-Suffix
+'	'000005 - Seq
+'	'000010 - WC - WC name
+'	'Only process on WCs CS1A and DS1A and WCs that start with FS
+'	F.Intrinsic.String.Split(V.Passed.000004,"-",V.Local.sWO)
+'	F.Intrinsic.String.RPad(V.Local.sWO(0)," ",6,V.Local.sWO(0))
+'	V.Local.sWO(0).Set(V.Local.sWO(0).Left6)
+'	F.Intrinsic.String.RPad(V.Local.sWO(1)," ",3,V.Local.sWO(1))
+'	V.Local.sWO(1).Set(V.Local.sWO(1).Left3)
+'	F.Intrinsic.String.Split(V.Passed.000010," - ",V.Local.sWC)
+'	V.Local.sWC.RedimPreserve(0,0)
+'	F.Intrinsic.Control.If(V.Local.sWC,=,"CS1A","or",V.Local.sWC,=,"DS1A",V.Local.sWC.Left2,=,"FS")
+'		F.Intrinsic.String.LPad(V.Passed.000005,"0",6,V.Local.sSeq)
+'		Gui.F_Bin_Selector.txtQtyPassed.Text(V.Passed.000001)
+'		Gui.F_Bin_Selector.txtQtyPassed.Visible(True)
+'		Gui.F_Bin_Selector.lblQtyPassed.Visible(True)
+'		F.Intrinsic.Control.CallSub(DisplayBinSelector,"Job",V.Local.sWO(0),"Suffix",V.Local.sWO(1),"Seq",V.Local.sSeq)
+'	F.Intrinsic.Control.EndIf
+'DEBUG
+' |
+'V
+'F.Intrinsic.Control.Else
+'	Function.Intrinsic.Debug.InvokeDebugger
+'	Function.Intrinsic.Debug.Stop
+'	F.Intrinsic.Control.CallSub(DisplayBinSelector,"Job","166266","Suffix","   ","Seq","000700")
+' ^
+' |
+'DEBUG
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.DisplayBinSelector.Start
+'Args: Job, Suffix, Seq
+'Using the Passed Job, Suffix and Seq, get the RM part and display it
+V.Local.sError.Declare
+V.Local.sSQL.Declare
+V.Local.sPart.Declare
+V.Local.sRev.Declare
+V.Local.sLoc.Declare
+V.Local.sBin.Declare
+V.Local.sCust.Declare
+V.Local.fOpen.Declare
+V.Local.iCnt.Declare
+V.Local.bUseRev.Declare
+F.Intrinsic.Control.Try
+
+'F.Intrinsic.Control.If(V.Screen.F_Bin_Selector!txtQtyPassed.Text,>,0)
+'	'On Hook 15890, need to see if current sequence is the last one
+'	F.Intrinsic.String.Build("select top 1 SEQ from V_JOB_OPERATIONS where JOB = '{0}' and SUFFIX = '{1}' and SEQ < '995000' and LMO = 'L' order by SEQ desc;",V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+'	F.ODBC.Connection!con.OpenCompanyConnection
+'	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+'	F.ODBC.Connection!con.Close
+'	F.Intrinsic.Control.If(V.Local.sSQL,!=,V.Args.Seq)
+'		'Current sequence is not the last labor sequence, end program
+'		F.Intrinsic.Control.End
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}{1}{2}",V.Args.Job,V.Args.Suffix,V.Args.Seq,V.Global.sSerial)
+
+'Check that the WO is open, also grab the Location
+F.Intrinsic.String.Build("select DATE_CLOSED, LOCATION, CUSTOMER from V_JOB_HEADER where JOB = '{0}' and SUFFIX = '{1}';",V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+F.ODBC.Connection!con.Close
+F.Intrinsic.String.Split(V.Local.sSQL,"*!*",V.Local.sSQL)
+F.Intrinsic.Control.If(V.Local.sSQL(0),!=,"1/1/1900","and",V.Local.sSQL(0),!=,"01/01/1900 12:00:00 AM")
+	'WO is closed, notify the User that WO to WIP cannot process this WO
+	F.Intrinsic.String.Build("WO: {0}-{1} is closed. Returning to SFDC program.",V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+	F.Intrinsic.UI.Msgbox(V.Local.sSQL,"WO to WIP")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+V.Local.sLoc.Set(V.Local.sSQL(1))
+V.Local.sCust.Set(V.Local.sSQL(2))
+V.Local.sSQL.Redim(0,0)
+
+'Get customer name
+F.Intrinsic.String.Build("select NAME_CUSTOMER from V_CUSTOMER_MASTER where CUSTOMER = '{0}';",V.Local.sCust,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Global.sCustomer)
+F.ODBC.Connection!con.Close
+
+'Check that the WO Seq is open
+F.Intrinsic.String.Build("select FLAG_CLOSED from V_JOB_OPERATIONS where JOB = '{0}' and SUFFIX = '{1}' and SEQ = '{2}';",V.Args.Job,V.Args.Suffix,V.Args.Seq,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+F.ODBC.Connection!con.Close
+
+F.Intrinsic.Control.If(V.Local.sSQL,=,"Y")
+	'WO Seq is closed, notify the user that WO to WIP cannot process this Seq
+	F.Intrinsic.String.Build("WO: {0}-{1} Seq: {2} is closed. Returning to SFDC program.",V.Args.Job,V.Args.Suffix,V.Args.Seq,V.Local.sSQL)
+	F.Intrinsic.UI.Msgbox(V.Local.sSQL,"WO to WIP")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+'Check for sequences between 990000 and 994999
+F.Intrinsic.String.Build("select top 1 JB.PART, JB.HOURS_ESTIMATED from V_JOB_OPERATIONS JB left join V_INVENTORY_ALL INV on JB.PART = INV.PART where JB.JOB = '{0}' and JB.SUFFIX = '{1}' and JB.SEQ between '990000' and '994999' and JB.LMO = 'M' and (INV.PRODUCT_LINE between '11' and '8Z' or INV.PRODUCT_LINE between 'A1' and 'TZ') order by JB.SEQ asc;",V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.If(V.Ambient.ExecuteAndReturnEOF,=,False)
+	F.Intrinsic.String.Split(V.Local.sSQL,"*!*",V.Local.sSQL)
+	V.Local.sPart.Set(V.Local.sSQL(0))
+	Gui.F_Bin_Selector.txtPart.Text(V.Local.sPart)
+F.Intrinsic.Control.Else
+	'Get all RM's from DB that come before the current labor sequence
+	F.Intrinsic.String.Build("select top 1 JB.PART, JB.HOURS_ESTIMATED from V_JOB_OPERATIONS JB left join V_INVENTORY_ALL INV on JB.PART = INV.PART where JB.JOB = '{0}' and JB.SUFFIX = '{1}' and JB.SEQ < '{2}' and JB.LMO = 'M' and (INV.PRODUCT_LINE between '11' and '8Z' or INV.PRODUCT_LINE between 'A1' and 'TZ') order by JB.SEQ desc;",V.Args.Job,V.Args.Suffix,V.Args.Seq,V.Local.sSQL)
+	F.ODBC.Connection!con.OpenCompanyConnection
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+	F.ODBC.Connection!con.Close
+	F.Intrinsic.Control.If(V.Ambient.ExecuteAndReturnEOF,=,False)
+		F.Intrinsic.String.Split(V.Local.sSQL,"*!*",V.Local.sSQL)
+		V.Local.sPart.Set(V.Local.sSQL(0))
+		Gui.F_Bin_Selector.txtPart.Text(V.Local.sPart)
+	F.Intrinsic.Control.Else
+		'Couldn't find any material seq's so can't process anything to WIP
+		F.Intrinsic.String.Build("No material Sequences were found before Seq: {0} on WO: {1}-{2}",V.Args.Seq,V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+		F.Intrinsic.UI.Msgbox(V.Local.sSQL,"WO to WIP")
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+V.Local.fOpen.Set(V.Local.sSQL(1))
+V.Local.sSQL.Redim(0,0)
+
+Gui.F_Bin_Selector.txtLoc.Text(V.Local.sLoc)
+
+'Find Qty and Qty that has already been WIP'd
+F.Intrinsic.String.Build("select QUANTITY from V_ITEM_MASTER where left(PART,17) = '{0}' and right(PART,3) = 'WIP' and LOCATION = '{1}' and left(SERIAL_NUMBER,9) = '{2}{3}';",V.Local.sPart.Left17,V.Local.sLoc,V.Args.Job,V.Args.Suffix,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Data.DataTable.CreateFromSQL("dtWIPQty","con",V.Local.sSQL,True)
+F.ODBC.Connection!con.Close
+F.Data.DataTable.Compute("dtWIPQty","Sum(QUANTITY)",,V.Global.fWIP)
+F.Data.DataTable.Close("dtWIPQty")
+F.Intrinsic.Math.Sub(V.Local.fOpen,V.Global.fWIP,V.Global.fMaxWIP)
+
+Gui.F_Bin_Selector.txtQtyWIP.Text(V.Global.fWIP)
+Gui.F_Bin_Selector.txtQtyOpen.Text(V.Local.fOpen)
+Gui.F_Bin_Selector..ApplyMasks
+
+'Get Heat numbers that have been issued to the job and add to DDL
+F.Intrinsic.String.Build("select distinct HEAT from V_ITEM_HISTORY where JOB = '{0}' and SUFFIX = '{1}' and PART = '{2}' and CODE_TRANSACTION = 'J55' and HEAT <> '' order by HEAT;",V.Args.Job,V.Args.Suffix,V.Screen.F_Bin_Selector!txtPart.Text,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.If(V.Ambient.ExecuteAndReturnEOF,=,False)
+	F.Intrinsic.String.Split(V.Local.sSQL,"#$#",V.Local.sSQL)
+	Gui.F_Bin_Selector.ddlHeat.AddItem("")
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSQL.UBound,1)
+		Gui.F_Bin_Selector.ddlHeat.AddItem(V.Local.sSQL(V.Local.iCnt))
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	Gui.F_Bin_Selector.ddlHeat.ListIndex(0)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtLabel",True)
+F.Data.DataTable.AddColumn("dtLabel","PART","String")
+F.Data.DataTable.AddColumn("dtLabel","DESCRIPTION","String")
+F.Data.DataTable.AddColumn("dtLabel","LOCATION","String")
+F.Data.DataTable.AddColumn("dtLabel","LOT","String")
+F.Data.DataTable.AddColumn("dtLabel","HEAT","String")
+F.Data.DataTable.AddColumn("dtLabel","WO","String")
+F.Data.DataTable.AddColumn("dtLabel","NAME_CUST","String")
+F.Data.DataTable.AddColumn("dtLabel","QUANTITY","String")
+
+Gui.F_Bin_Selector..Show
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(F_Bin_Selector_UnLoad)
+F.Intrinsic.Control.EndTry
+Program.Sub.DisplayBinSelector.End
+
+Program.Sub.F_Bin_Selector_UnLoad.Start
+V.Local.sError.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.ODBC.con.State,=,1)
+	F.ODBC.Connection!con.Close
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.If(V.DataTable.dtWIPQty.Exists)
+	F.Data.DataTable.Close("dtWIPQty")
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.If(V.DataTable.dtLabel.Exists)
+	F.Intrinsic.Control.If(V.DataTable.dtLabel.RowCount,>,0)
+		'Show Printer Select Dialog
+		Gui.F_Bin_Selector..Visible(False)
+		F.Intrinsic.Control.CallSub(SelectPrinter)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtLabel")
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.F_Bin_Selector_UnLoad.End
+
+Program.Sub.txtQty_LostFocus.Start
+V.Local.sError.Declare
+V.Local.sQty.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.Screen.F_Bin_Selector!txtQty.Text,=,"")
+	Gui.F_Bin_Selector.txtQty.Text("0")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Format(V.Screen.F_Bin_Selector!txtQty.Text,"#,###,##0.0000",V.Local.sQty)
+Gui.F_Bin_Selector.txtQty.Text(V.Local.sQty)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(F_Bin_Selector_UnLoad)
+F.Intrinsic.Control.EndTry
+Program.Sub.txtQty_LostFocus.End
+
+Program.Sub.cmdProcess_Click.Start
+V.Local.sError.Declare
+V.Local.sLot.Declare
+V.Local.sPart.Declare
+V.Local.sSQL.Declare
+V.Local.sMstr.Declare
+V.Local.sMst2.Declare
+V.Local.sWO.Declare
+V.Local.iLot.Declare
+V.Local.fQty.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.Screen.F_Bin_Selector!txtQty.Text,=,"0.0000")
+	F.Intrinsic.UI.Msgbox("Zero Quantity was entered. This program needs non-zero quantity to process a WO to WIP transaction.","WO to WIP")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.ElseIf(V.Screen.F_Bin_Selector!txtBin.Text.Trim,=,"")
+	F.Intrinsic.UI.Msgbox("A Bin has not been selected.","WO to WIP")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+Gui.F_Bin_Selector..Enabled(False)
+
+'Get the next Lot number
+F.Global.General.ReadOption(400561,3,"***NO RETURN***",1,V.Local.sLot)
+
+V.Local.iLot.Set(V.Local.sLot.Trim)
+F.Intrinsic.Math.Add(V.Local.iLot,1,V.Local.iLot)
+F.Intrinsic.String.LPad(V.Local.iLot.String,"0",6,V.Local.sLot)
+
+F.Global.General.SaveOption(400561,1,,,V.Local.sLot,,,,V.Local.iLot)
+
+'Check if the Part with a WIP rev exists
+F.Intrinsic.String.Left(V.Screen.F_Bin_Selector!txtPart.Text,17,V.Local.sPart)
+F.Intrinsic.String.GSSPartString(V.Local.sPart,"WIP",V.Local.sPart)
+F.Intrinsic.String.Build("select UM_INVENTORY, DESCRIPTION from V_INVENTORY_MSTR where PART = '{0}' and LOCATION = '{1}';",V.Screen.F_Bin_Selector!txtPart.Text,V.Screen.F_Bin_Selector!txtLoc.Text,V.Local.sSQL)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sMstr)
+F.Intrinsic.String.Split(V.Local.sMstr,"*!*",V.Local.sMstr)
+F.Intrinsic.String.Build("select PART from V_INVENTORY_MSTR where PART = '{0}' and LOCATION = '{1}';",V.Local.sPart,V.Screen.F_Bin_Selector!txtLoc.Text,V.Local.sSQL)
+F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sSQL)
+F.Intrinsic.Control.If(V.Ambient.ExecuteAndReturnEOF)
+	'Nothing came back, need to create the revised part
+	F.Intrinsic.String.Build("select CODE_SOURCE from V_INVENTORY_MST2 where PART = '{0}' and LOCATION = '{1}';",V.Screen.F_Bin_Selector!txtPart.Text,V.Screen.F_Bin_Selector!txtLoc.Text,V.Local.sSQL)
+	F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSQL,V.Local.sMst2)
+	F.Global.Inventory.CreatePart(V.Local.sPart,V.Local.sMstr(0),V.Local.sMstr(1),V.Screen.F_Bin_Selector!txtLoc.Text,"WZ",V.Local.sMst2,,,)
+F.Intrinsic.Control.EndIf
+F.ODBC.Connection!con.Close
+
+'F.Data.DataTable.AddColumn("dtLabel","PART","String")
+'F.Data.DataTable.AddColumn("dtLabel","DESCRIPTION","String")
+'F.Data.DataTable.AddColumn("dtLabel","LOCATION","String")
+'F.Data.DataTable.AddColumn("dtLabel","LOT","String")
+'F.Data.DataTable.AddColumn("dtLabel","HEAT","String")
+'F.Data.DataTable.AddColumn("dtLabel","WO","String")
+'F.Data.DataTable.AddColumn("dtLabel","NAME_CUST","String")
+'F.Data.DataTable.AddColumn("dtLabel","QUANTITY","String")
+
+'Fill out library DT
+F.Intrinsic.Math.ConvertToFloat(V.Screen.F_Bin_Selector!txtQty.Text,V.Local.fQty)
+F.Data.DataTable.AddRow("IssueReceipts","Part",V.Local.sPart,"Rev","WIP","Locn",V.Screen.F_Bin_Selector!txtLoc.Text,"Qty",V.Local.fQty,"Ref","WO TO WIP","Lot",V.Local.sLot,"Bin",V.Screen.F_Bin_Selector!txtBin.Text,"Heat",V.Screen.F_Bin_Selector!ddlHeat.Text,"Serial",V.Global.sSerial,"Iss-Rec","R")
+F.Data.DataTable.AddRow("dtLabel","PART",V.Local.sPart,"DESCRIPTION",V.Local.sMstr(1),"LOCATION",V.Screen.F_Bin_Selector!txtLoc.Text,"LOT",V.Local.sLot,"HEAT",V.Screen.F_Bin_Selector!ddlHeat.Text,"WO",V.Global.sSerial.Left9,"NAME_CUST",V.Global.sCustomer,"QUANTITY",V.Local.fQty.String)
+F.Intrinsic.Control.CallSub(IssueReceipt)
+F.Data.DataTable.DeleteRow("IssueReceipts")
+F.Data.DataTable.AcceptChanges("IssueReceipts")
+
+F.Intrinsic.UI.Msgbox("Would you like to process more Raw Material to WIP?","WO to WIP",4,V.Local.sSQL)
+F.Intrinsic.Control.If(V.Local.sSQL,=,6)
+	'Yes
+	Gui.F_Bin_Selector.txtBin.Text("")
+	Gui.F_Bin_Selector.txtQty.Text("0.0000")
+	
+	'Find Qty and Qty that has already been WIP'd
+	V.Local.sWO.Set(V.Global.sSerial.Left9)
+	F.Intrinsic.String.Build("select QUANTITY from V_ITEM_MASTER where left(PART,17) = '{0}' and right(PART,3) = 'WIP' and LOCATION = '{1}' and left(SERIAL_NUMBER,9) = '{2}{3}';",V.Local.sPart.Left17,V.Screen.F_Bin_Selector!txtLoc.Text,V.Local.sWO.Left6,V.Local.sWO.Right3,V.Local.sSQL)
+	F.ODBC.Connection!con.OpenCompanyConnection
+	F.Data.DataTable.CreateFromSQL("dtWIPQty","con",V.Local.sSQL,True)
+	F.ODBC.Connection!con.Close
+	F.Data.DataTable.Compute("dtWIPQty","Sum(QUANTITY)",,V.Global.fWIP)
+	F.Data.DataTable.Close("dtWIPQty")
+	F.Intrinsic.Math.Sub(V.Screen.F_Bin_Selector!txtQtyOpen.Text,V.Global.fWIP,V.Global.fMaxWIP)
+	
+	Gui.F_Bin_Selector.txtQtyWIP.Text(V.Global.fWIP)
+	Gui.F_Bin_Selector..ApplyMasks
+F.Intrinsic.Control.ElseIf(V.Local.sSQL,=,7)
+	'No
+	F.Intrinsic.Control.CallSub(F_Bin_Selector_UnLoad)
+F.Intrinsic.Control.EndIf
+
+Gui.F_Bin_Selector..Enabled(True)
+Gui.F_Bin_Selector..SetFocus(True)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(F_Bin_Selector_UnLoad)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdProcess_Click.End
+
+Program.Sub.cmdBinBRW_Click.Start
+V.Local.sError.Declare
+V.Local.sSQL.Declare
+V.Local.sTitle.Declare
+V.Local.sColumns.Declare
+V.Local.sRet.Declare
+V.Local.iWidths.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.String.Build("select BIN, LOCATION, BIN_DESCRIPTION from V_BIN_MASTER where LOCATION = '{0}' order by BIN;",V.Screen.F_Bin_Selector!txtLoc.Text,V.Local.sSQL)
+F.Intrinsic.String.Build("Bin Master where Location = '{0}'",V.Screen.F_Bin_Selector!txtLoc.Text.Trim,V.Local.sTitle)
+F.Intrinsic.String.Split("Bin*!*Location*!*Description","*!*",V.Local.sColumns)
+F.Intrinsic.String.Split("15*!*10*!*25","*!*",V.Local.iWidths)
+F.ODBC.Connection!con.OpenCompanyConnection
+F.Intrinsic.UI.Browser(V.Local.sTitle,"con",V.Local.sSQL,V.Local.sColumns,V.Local.iWidths,V.Local.sRet)
+F.ODBC.Connection!con.Close
+
+F.Intrinsic.Control.If(V.Local.sRet.IsNotCancel)
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.F_Bin_Selector.txtBin.Text(V.Local.sRet(0))
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdBinBRW_Click.End
+
+Program.Sub.SelectPrinter.Start
+V.Local.sError.Declare
+V.Local.sSQL.Declare
+F.Intrinsic.Control.Try
+
+'Defaulting copies to 1 on print dialog selection
+Gui.F_Select_Printer.txtCopies.Text(1)
+
+'Getting printer list for Sentinel
+V.Local.sSQL.Set("Select PrinterName, SentinelAlias from SERVER_PRINTERS where SentinelEnabled = 1")
+F.ODBC.Connection!CommonX.OpenCommonConnection
+F.ODBC.Connection!CommonX.OpenLocalRecordsetRO("rstPrinters",V.Local.sSQL)
+F.Intrinsic.Control.DoUntil(V.ODBC.CommonX!rstPrinters.EOF,=,True)
+	F.Intrinsic.Control.If(V.ODBC.CommonX!rstPrinters.FieldValTrim!SentinelAlias,=,"")
+		Gui.F_Select_Printer.cboPrinter.AddItem(V.ODBC.CommonX!rstPrinters.FieldValTrim!PrinterName)
+	F.Intrinsic.Control.Else
+		Gui.F_Select_Printer.cboPrinter.AddItem(V.ODBC.CommonX!rstPrinters.FieldValTrim!SentinelAlias)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.CommonX!rstPrinters.MoveNext
+F.Intrinsic.Control.Loop
+F.ODBC.CommonX!rstPrinters.Close
+F.ODBC.Connection!CommonX.Close
+
+Gui.F_Select_Printer..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(F_Select_Printer_UnLoad)
+F.Intrinsic.Control.EndTry
+Program.Sub.SelectPrinter.End
+
+Program.Sub.F_Select_Printer_UnLoad.Start
+V.Local.sError.Declare
+F.Intrinsic.Control.Try
+
+F.Intrinsic.Control.If(V.DataTable.dtLabel.Exists)
+	F.Data.DataTable.Close("dtLabel")
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.F_Select_Printer_UnLoad.End
+
+Program.Sub.cmdPrint_Click.Start
+V.Local.sError.Declare
+V.Local.iBIRunID.Declare
+V.Local.iBIRptID.Declare
+V.Local.iBILogID.Declare
+V.Local.iCnt.Declare
+F.Intrinsic.Control.Try
+
+'Print labels
+F.Global.BI.GetRunID(V.Local.iBIRunID)
+F.Global.BI.GetIDFromName("SF_WIPTAG_4820A_RGM.lab",V.Local.iBIRptID)
+F.Global.BI.StartLogging(V.Local.iBIRunID,V.Local.iBIRptID,-1,"",V.Local.iBILogID)
+
+F.Intrinsic.Control.For(V.Local.iCnt,1,V.Screen.F_Select_Printer!txtCopies.Text,1)
+	F.Global.BI.PrintCodesoftLabelFromDataTable(V.Local.iBIRunID,V.Local.iBILogID,"dtLabel",V.Screen.F_Select_Printer!cboPrinter.Text,True)
+F.Intrinsic.Control.Next(V.Local.iCnt)
+
+F.Data.DataTable.Close("dtLabel")
+
+F.Intrinsic.Control.CallSub(F_Select_Printer_UnLoad)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Caller.ScriptFile,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(F_Select_Printer_UnLoad)
+F.Intrinsic.Control.EndTry
+Program.Sub.cmdPrint_Click.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$triley$}$20230321112225354$}$iK6nerqp9nur1h1iSBfRKBBz1ENCgYv6/GyRi3xU+WhWTkqIP6K0JxcRttfRSZHMsT2W6bie7ts=
+Program.Sub.Comments.End
